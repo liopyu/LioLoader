@@ -1,6 +1,5 @@
-package net.liopyu.lioloader.neoforge;
+package net.liopyu.lioloader;
 
-import net.liopyu.lioloader.Lioloader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLPaths;
 
