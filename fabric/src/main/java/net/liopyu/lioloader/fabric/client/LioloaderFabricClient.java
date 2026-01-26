@@ -1,4 +1,4 @@
-package net.liopyu.lioloader.client;
+package net.liopyu.lioloader.fabric.client;
 
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ClientModInitializer;

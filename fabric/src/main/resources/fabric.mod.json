@@ -15,10 +15,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.liopyu.lioloader.LioloaderFabric"
+      "net.liopyu.lioloader.fabric.LioloaderFabric"
     ],
     "client": [
-      "net.liopyu.lioloader.client.LioloaderFabricClient"
+      "net.liopyu.lioloader.fabric.client.LioloaderFabricClient"
     ]
   },
   "mixins": [

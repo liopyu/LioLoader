@@ -1,9 +1,10 @@
-package net.liopyu.lioloader;
+package net.liopyu.lioloader.fabric;
 
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
+import net.liopyu.lioloader.Lioloader;
 import net.liopyu.lioloader.pack.LioloaderPackLoadOrder;
 
 import java.nio.file.Path;

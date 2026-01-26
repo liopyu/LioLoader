@@ -1,5 +1,6 @@
-package net.liopyu.lioloader;
+package net.liopyu.lioloader.neoforge;
 
+import net.liopyu.lioloader.Lioloader;
 import net.liopyu.lioloader.pack.LioloaderGlobalResourcePacks;
 import net.minecraft.server.packs.PackType;
 import net.neoforged.api.distmarker.Dist;
