@@ -84,22 +84,34 @@ public final class LioloaderPackLoadOrder {
 
         java.util.HashMap<String, String> normalizedToActual = new java.util.HashMap<>();
         for (String id : repo.getAvailableIds()) {
-            String norm = normalizePackKey(id);
-            normalizedToActual.putIfAbsent(norm, id);
+            String a = normalizePackKey(id);
+            if (!a.isEmpty()) normalizedToActual.putIfAbsent(a, id);
+
+            String b = a.replace('_', '-');
+            if (!b.isEmpty()) normalizedToActual.putIfAbsent(b, id);
+
+            String c = a.replace('-', '_');
+            if (!c.isEmpty()) normalizedToActual.putIfAbsent(c, id);
         }
 
         LinkedHashSet<String> selected = new LinkedHashSet<>();
 
         for (String raw : preferredOrder) {
             if (raw == null) continue;
-            String key = normalizePackKey(raw);
-            if (key.isEmpty()) continue;
 
-            String actual = normalizedToActual.get(key);
+            String rawKey = normalizePackKey(raw);
+            if (rawKey.isEmpty()) continue;
+
+            String actual = normalizedToActual.get(rawKey);
+            if (actual == null) actual = normalizedToActual.get(rawKey.replace('-', '_'));
+            if (actual == null) actual = normalizedToActual.get(rawKey.replace('_', '-'));
+
             if (actual != null && repo.isAvailable(actual)) {
                 selected.add(actual);
             } else if (repo.isAvailable(raw)) {
                 selected.add(raw);
+            } else if (repo.isAvailable(rawKey)) {
+                selected.add(rawKey);
             } else {
                 LogUtils.getLogger().info("[Lioloader] Load order references missing pack id='{}'", raw);
             }
@@ -124,9 +136,11 @@ public final class LioloaderPackLoadOrder {
         String out = s.trim().toLowerCase(java.util.Locale.ROOT);
         if (out.endsWith(".zip")) out = out.substring(0, out.length() - 4);
         while (out.endsWith("/") || out.endsWith("\\")) out = out.substring(0, out.length() - 1).trim();
+        out = out.replace(' ', '_');
+        out = out.replace('-', '_');
+        while (out.contains("__")) out = out.replace("__", "_");
         return out;
     }
-
     public static void ensureOrderFiles(Path gameDir) {
         try {
             Path instanceDir = gameDir.resolve("lioloader");
