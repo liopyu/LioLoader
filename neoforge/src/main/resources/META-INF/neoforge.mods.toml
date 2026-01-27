@@ -1,6 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[2,)"
-#issueTrackerURL = ""
+loaderVersion = "[${javafml_loader_version_min},)"
 license = "GNU LGPL 3.0"
 
 [[mods]]
@@ -11,28 +10,28 @@ authors = "Liopyu"
 description = '''
 A Global Datapack/Resourcepack Loader
 '''
-#logoFile = ""
 
 [[dependencies.lioloader]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21,)"
+versionRange = "[${neoforge_version_min},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.lioloader]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.10,)"
+versionRange = "[${minecraft_version_min},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.lioloader]]
 modId = "architectury"
 type = "required"
-versionRange = "[18.0.8,)"
+versionRange = "[${architectury_api_version_min},)"
 ordering = "AFTER"
 side = "BOTH"
 
 [[mixins]]
 config = "lioloader.mixins.json"
+logoFile="logo.png"

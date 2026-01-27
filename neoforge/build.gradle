@@ -42,12 +42,25 @@ dependencies {
 }
 
 processResources {
-    inputs.property 'version', project.version
+    inputs.properties([
+            version: project.version,
+            minecraft_version_min: rootProject.minecraft_version_min,
+            neoforge_version_min: rootProject.neoforge_version_min,
+            architectury_api_version_min: rootProject.architectury_api_version_min,
+            javafml_loader_version_min: rootProject.javafml_loader_version_min
+    ])
 
     filesMatching('META-INF/neoforge.mods.toml') {
-        expand version: project.version
+        expand([
+                version: project.version,
+                minecraft_version_min: rootProject.minecraft_version_min,
+                neoforge_version_min: rootProject.neoforge_version_min,
+                architectury_api_version_min: rootProject.architectury_api_version_min,
+                javafml_loader_version_min: rootProject.javafml_loader_version_min
+        ])
     }
 }
+
 
 shadowJar {
     configurations = [project.configurations.shadowBundle]

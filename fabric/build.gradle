@@ -35,11 +35,25 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 }
 
-processResources {
-    inputs.property 'version', project.version
+tasks.named("processResources", ProcessResources).configure {
+    inputs.properties([
+            version: project.version,
+            minecraft_version: rootProject.minecraft_version,
+            java_version: rootProject.java_version,
+            architectury_api_version: rootProject.architectury_api_version,
+            fabric_loader_version: rootProject.fabric_loader_version,
+            fabric_api_version: rootProject.fabric_api_version
+    ])
 
-    filesMatching('fabric.mod.json') {
-        expand version: project.version
+    filesMatching("fabric.mod.json") {
+        expand([
+                version: project.version,
+                minecraft_version: rootProject.minecraft_version,
+                java_version: rootProject.java_version,
+                architectury_api_version: rootProject.architectury_api_version,
+                fabric_loader_version: rootProject.fabric_loader_version,
+                fabric_api_version: rootProject.fabric_api_version
+        ])
     }
 }
 
