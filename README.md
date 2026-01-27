@@ -113,7 +113,7 @@ Then set priority:
 
 ## Community
 
-Join our [Discord](https://discord.gg/lat) community to connect with other users and get help
+Join our [Discord](https://discord.gg/sPHes7q4Pr) community to connect with other users and get help
 with any questions or issues
 you encounter while using LioLoader.
 
