@@ -16,6 +16,7 @@ public final class LioloaderFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        LogUtils.getLogger().info("I'm in your jars. - Liopyu");
         Path gameDir = FabricLoader.getInstance().getGameDir();
         Lioloader.init(gameDir);
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
