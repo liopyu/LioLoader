@@ -79,7 +79,7 @@ Each file contains an `order` array:
 
 * Packs listed first are treated as **higher priority**.
 * Packs not listed still load normally (Minecraft defaults).
-* Packs with lower priority overwrite packs with higher priority that get read first.
+* Packs with lower priorities will overwrite packs with higher priorities that get read/loaded in first.
 
 ### Pack ID notes
 
