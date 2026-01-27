@@ -113,7 +113,9 @@ Then set priority:
 
 ## Community
 
-[![Discord](https://i.ibb.co/qDNhg49/636e0a6a49cf127bf92de1e2-icon-clyde-blurple-RGB.png)](https://discord.gg/sPHes7q4Pr)
+Join our [Discord](https://discord.gg/lat) community to connect with other users and get help
+with any questions or issues
+you encounter while using LioLoader.
 
 ![usageinmodpacks](https://i.ibb.co/hJvQHRN5/usageinmodpacks.png)
 
