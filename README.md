@@ -17,7 +17,7 @@ LioLoader uses a `lioloader` folder inside your instance:
 
 Anything placed in these folders will be discovered and added to Minecraft’s pack repositories.
 
-Note: This mod is only needed server-side
+Note: This mod is only needed server-side and needs Architectury API
 ---
 
 ## What Counts as a Pack?
