@@ -17,7 +17,7 @@ import net.neoforged.neoforge.event.GameShuttingDownEvent;
 import java.nio.file.Path;
 import java.util.List;
 
-@EventBusSubscriber(modid = Lioloader.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Lioloader.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public final class LioloaderNeoForgeClientReload {
     @SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {

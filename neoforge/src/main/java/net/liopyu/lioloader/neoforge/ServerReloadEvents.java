@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
-@EventBusSubscriber(modid = Lioloader.MOD_ID)
+@EventBusSubscriber(modid = Lioloader.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public final class ServerReloadEvents {
     private static final org.slf4j.Logger LOGGER = LogUtils.getLogger();
 

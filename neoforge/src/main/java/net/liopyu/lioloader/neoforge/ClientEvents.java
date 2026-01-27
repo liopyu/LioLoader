@@ -11,7 +11,7 @@ import net.neoforged.neoforge.event.AddPackFindersEvent;
 
 import java.nio.file.Path;
 
-@EventBusSubscriber(modid = Lioloader.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Lioloader.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public final class ClientEvents {
     @SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {

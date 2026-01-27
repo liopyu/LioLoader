@@ -12,7 +12,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import java.nio.file.Path;
 import java.util.List;
 
-@EventBusSubscriber(modid = Lioloader.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Lioloader.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
 public final class ClientReloadEvents {
     private static boolean done;
 
