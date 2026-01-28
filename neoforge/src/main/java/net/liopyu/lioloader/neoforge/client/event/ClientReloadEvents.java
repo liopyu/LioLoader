@@ -1,4 +1,4 @@
-package net.liopyu.lioloader.neoforge;
+package net.liopyu.lioloader.neoforge.client.event;
 
 import com.mojang.logging.LogUtils;
 import net.liopyu.lioloader.Lioloader;
@@ -28,11 +28,18 @@ public final class ClientReloadEvents {
         client.execute(() -> {
             try {
                 Path gameDir = Lioloader.gameDir();
+                boolean changed = false;
+
                 if (gameDir != null) {
                     List<String> order = LioloaderPackLoadOrder.readOrder(
                             LioloaderPackLoadOrder.resourcepackOrderFile(gameDir)
                     );
-                    LioloaderPackLoadOrder.applyOrder(client.getResourcePackRepository(), order);
+                    changed = LioloaderPackLoadOrder.applyOrder(client.getResourcePackRepository(), order);
+                }
+
+                if (!changed) {
+                    LogUtils.getLogger().info("[Lioloader] Client pack order unchanged; skipping resource reload");
+                    return;
                 }
 
                 client.reloadResourcePacks().thenRun(() -> {
@@ -45,5 +52,6 @@ public final class ClientReloadEvents {
                 LogUtils.getLogger().error("[Lioloader] Client reloadResourcePacks() call failed", t);
             }
         });
+
     }
 }

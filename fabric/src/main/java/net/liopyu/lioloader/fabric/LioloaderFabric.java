@@ -22,11 +22,19 @@ public final class LioloaderFabric implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             server.execute(() -> {
                 try {
-                    if (gameDir != null) {
+                    Path gd = Lioloader.gameDir();
+                    boolean changed = false;
+
+                    if (gd != null) {
                         List<String> order = LioloaderPackLoadOrder.readOrder(
-                                LioloaderPackLoadOrder.datapackOrderFile(gameDir)
+                                LioloaderPackLoadOrder.datapackOrderFile(gd)
                         );
-                        LioloaderPackLoadOrder.applyOrder(server.getPackRepository(), order);
+                        changed = LioloaderPackLoadOrder.applyOrder(server.getPackRepository(), order);
+                    }
+
+                    if (!changed) {
+                        LogUtils.getLogger().info("[Lioloader] Server pack order unchanged; skipping datapack reload");
+                        return;
                     }
 
                     Collection<String> selected = server.getPackRepository().getSelectedIds();

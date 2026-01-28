@@ -4,6 +4,7 @@ import net.liopyu.lioloader.Lioloader;
 import net.liopyu.lioloader.pack.LioloaderGlobalDatapacks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.repository.PackRepository;
+import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.WorldDataConfiguration;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,13 +32,25 @@ public final class MinecraftServerMixin {
         if (gameDir == null) return;
 
         Path globalDir = LioloaderGlobalDatapacks.globalDatapacksDir(gameDir);
+        var source = LioloaderGlobalDatapacks.repositorySource(globalDir);
 
-        ((PackRepositoryAccessor) repo).lioloader$getSources().add(LioloaderGlobalDatapacks.repositorySource(globalDir));
+        PackRepositoryAccessor acc = (PackRepositoryAccessor) repo;
+        java.util.Set<RepositorySource> old = acc.lioloader$getSources();
+
+        if (old != null && old.contains(source)) {
+            return;
+        }
+
+        java.util.LinkedHashSet<RepositorySource> next = new java.util.LinkedHashSet<>();
+        if (old != null) next.addAll(old);
+        next.add(source);
+
+        acc.lioloader$setSources(next);
 
         com.mojang.logging.LogUtils.getLogger().info(
                 "[Lioloader] configurePackRepository(HEAD): injected source dir={} safeMode={} initMode={}",
                 globalDir, safeMode, initMode
         );
     }
-    
+
 }

@@ -1,4 +1,4 @@
-package net.liopyu.lioloader.neoforge;
+package net.liopyu.lioloader.neoforge.server.event;
 
 import com.mojang.logging.LogUtils;
 import net.liopyu.lioloader.Lioloader;
@@ -21,11 +21,18 @@ public final class ServerReloadEvents {
         server.execute(() -> {
             try {
                 Path gameDir = Lioloader.gameDir();
+                boolean changed = false;
+
                 if (gameDir != null) {
                     List<String> order = LioloaderPackLoadOrder.readOrder(
                             LioloaderPackLoadOrder.datapackOrderFile(gameDir)
                     );
-                    LioloaderPackLoadOrder.applyOrder(server.getPackRepository(), order);
+                    changed = LioloaderPackLoadOrder.applyOrder(server.getPackRepository(), order);
+                }
+
+                if (!changed) {
+                    LOGGER.info("[Lioloader] Server pack order unchanged; skipping datapack reload");
+                    return;
                 }
 
                 Collection<String> selected = server.getPackRepository().getSelectedIds();
@@ -41,5 +48,6 @@ public final class ServerReloadEvents {
                 LOGGER.error("[Lioloader] Server reloadResources() call failed", t);
             }
         });
+
     }
 }

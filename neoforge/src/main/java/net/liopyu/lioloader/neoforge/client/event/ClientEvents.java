@@ -1,4 +1,4 @@
-package net.liopyu.lioloader.neoforge;
+package net.liopyu.lioloader.neoforge.client.event;
 
 import net.liopyu.lioloader.Lioloader;
 import net.liopyu.lioloader.pack.LioloaderGlobalResourcePacks;

@@ -10,5 +10,8 @@ import java.util.Set;
 @Mixin(PackRepository.class)
 public interface PackRepositoryAccessor {
     @Accessor("sources")
-    Set<RepositorySource> lioloader$getSources();
+    java.util.Set<RepositorySource> lioloader$getSources();
+
+    @Accessor("sources")
+    void lioloader$setSources(java.util.Set<RepositorySource> sources);
 }

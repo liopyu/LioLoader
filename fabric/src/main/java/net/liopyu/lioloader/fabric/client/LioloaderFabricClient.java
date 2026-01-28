@@ -15,12 +15,19 @@ public final class LioloaderFabricClient implements ClientModInitializer {
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
             client.execute(() -> {
                 try {
-                    Path gameDir = Lioloader.gameDir();
-                    if (gameDir != null) {
+                    Path gd = Lioloader.gameDir();
+                    boolean changed = false;
+
+                    if (gd != null) {
                         List<String> order = LioloaderPackLoadOrder.readOrder(
-                                LioloaderPackLoadOrder.resourcepackOrderFile(gameDir)
+                                LioloaderPackLoadOrder.resourcepackOrderFile(gd)
                         );
-                        LioloaderPackLoadOrder.applyOrder(client.getResourcePackRepository(), order);
+                        changed = LioloaderPackLoadOrder.applyOrder(client.getResourcePackRepository(), order);
+                    }
+
+                    if (!changed) {
+                        LogUtils.getLogger().info("[Lioloader] Client pack order unchanged; skipping resource reload");
+                        return;
                     }
 
                     client.reloadResourcePacks().thenRun(() -> {
