@@ -19,6 +19,6 @@ public final class ServerEvents {
         Path gameDir = FMLPaths.GAMEDIR.get();
         Path globalDir = LioloaderGlobalDatapacks.globalDatapacksDir(gameDir);
 
-        event.addRepositorySource(LioloaderGlobalDatapacks.repositorySource(globalDir));
+        event.addRepositorySource(LioloaderGlobalDatapacks.repositorySource(gameDir));
     }
 }

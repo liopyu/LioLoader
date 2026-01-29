@@ -32,7 +32,7 @@ public final class MinecraftServerMixin {
         if (gameDir == null) return;
 
         Path globalDir = LioloaderGlobalDatapacks.globalDatapacksDir(gameDir);
-        var source = LioloaderGlobalDatapacks.repositorySource(globalDir);
+        var source = LioloaderGlobalDatapacks.repositorySource(gameDir);
 
         PackRepositoryAccessor acc = (PackRepositoryAccessor) repo;
         java.util.Set<RepositorySource> old = acc.lioloader$getSources();

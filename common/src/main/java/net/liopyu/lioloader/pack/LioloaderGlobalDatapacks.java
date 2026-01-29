@@ -23,6 +23,16 @@ import java.util.stream.Stream;
 public final class LioloaderGlobalDatapacks {
     private static final PackSource LIOLOADER_SOURCE = PackSource.create(PackSource.NO_DECORATION, true);
     private static final org.slf4j.Logger LOGGER = com.mojang.logging.LogUtils.getLogger();
+    public static Path instanceDatapacksDir(Path gameDir) {
+        return gameDir.resolve("datapacks");
+    }
+
+    public static RepositorySource repositorySource(Path gameDir) {
+        return new MultiGlobalDirSource(
+                globalDatapacksDir(gameDir),
+                instanceDatapacksDir(gameDir)
+        );
+    }
 
     private LioloaderGlobalDatapacks() {
     }
@@ -30,9 +40,91 @@ public final class LioloaderGlobalDatapacks {
     public static Path globalDatapacksDir(Path gameDir) {
         return gameDir.resolve("lioloader").resolve("data");
     }
+    private static final class MultiGlobalDirSource implements RepositorySource {
+        private final Path[] roots;
 
-    public static RepositorySource repositorySource(Path globalDir) {
-        return new GlobalDirSource(globalDir);
+        private MultiGlobalDirSource(Path... roots) {
+            this.roots = roots;
+        }
+        private static void scanOneRoot(Consumer<Pack> consumer, Path rootDir, java.util.Set<String> emitted) {
+            LOGGER.info("[Lioloader] Scanning global datapacks dir (recursive): {}", rootDir);
+
+            try {
+                Files.createDirectories(rootDir);
+            } catch (IOException e) {
+                LOGGER.error("[Lioloader] Failed to create datapacks dir: {}", rootDir, e);
+                return;
+            }
+
+            Path cacheDir = rootDir.resolve(".lioloader_cache").resolve("extracted_datapacks");
+            try {
+                Files.createDirectories(cacheDir);
+            } catch (IOException e) {
+                LOGGER.error("[Lioloader] Failed to create cache dir: {}", cacheDir, e);
+                return;
+            }
+
+            try {
+                Files.walkFileTree(rootDir, java.util.EnumSet.noneOf(java.nio.file.FileVisitOption.class), Integer.MAX_VALUE,
+                        new java.nio.file.SimpleFileVisitor<>() {
+                            @Override
+                            public java.nio.file.FileVisitResult preVisitDirectory(Path dir, java.nio.file.attribute.BasicFileAttributes attrs) {
+                                if (dir.equals(cacheDir) || dir.startsWith(cacheDir))
+                                    return java.nio.file.FileVisitResult.SKIP_SUBTREE;
+                                if (Files.isRegularFile(dir.resolve("pack.mcmeta"))) {
+                                    String id = makeIdForPathPack(rootDir, dir);
+                                    if (emitted.add(id)) {
+                                        acceptPackWithId(consumer, dir, new PathPackResources.PathResourcesSupplier(dir), id, dir.getFileName().toString());
+                                    }
+                                }
+                                return java.nio.file.FileVisitResult.CONTINUE;
+                            }
+
+                            @Override
+                            public java.nio.file.FileVisitResult visitFile(Path file, java.nio.file.attribute.BasicFileAttributes attrs) {
+                                String n = file.getFileName().toString();
+                                if (n.toLowerCase(Locale.ROOT).endsWith(".zip") && Files.isRegularFile(file)) {
+                                    scanZipForPacks(consumer, rootDir, file, cacheDir, emitted);
+                                }
+                                return java.nio.file.FileVisitResult.CONTINUE;
+                            }
+                        });
+            } catch (IOException e) {
+                LOGGER.error("[Lioloader] Recursive scan failed for {}", rootDir, e);
+            }
+        }
+
+        @Override
+        public void loadPacks(Consumer<Pack> consumer) {
+            java.util.HashSet<String> emitted = new java.util.HashSet<>();
+
+            for (Path root : roots) {
+                if (root == null) continue;
+                scanOneRoot(consumer, root, emitted);
+            }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof MultiGlobalDirSource other)) return false;
+            return java.util.Arrays.equals(
+                    java.util.Arrays.stream(roots).map(p -> p.normalize().toAbsolutePath().toString()).toArray(),
+                    java.util.Arrays.stream(other.roots).map(p -> p.normalize().toAbsolutePath().toString()).toArray()
+            );
+        }
+
+        @Override
+        public int hashCode() {
+            return java.util.Arrays.hashCode(
+                    java.util.Arrays.stream(roots).map(p -> p.normalize().toAbsolutePath().toString()).toArray()
+            );
+        }
+
+        @Override
+        public String toString() {
+            return "LioloaderMultiDatapacksSource" + java.util.Arrays.toString(roots);
+        }
     }
 
     private static final class GlobalDirSource implements RepositorySource {
@@ -344,8 +436,10 @@ public final class LioloaderGlobalDatapacks {
 
     public static void ensureDirs(Path gameDir) {
         try {
-            java.nio.file.Files.createDirectories(globalDatapacksDir(gameDir));
-        } catch (java.io.IOException ignored) {
+            Files.createDirectories(globalDatapacksDir(gameDir));
+            Files.createDirectories(instanceDatapacksDir(gameDir));
+        } catch (IOException ignored) {
         }
     }
+
 }
