@@ -10,6 +10,5 @@ public final class LioloaderNeoForge {
     public LioloaderNeoForge() {
         LogUtils.getLogger().info("I'm in your jars. - Liopyu");
         Lioloader.init(FMLPaths.GAMEDIR.get());
-
     }
 }

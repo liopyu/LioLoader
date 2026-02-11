@@ -27,7 +27,7 @@ side = "BOTH"
 
 [[dependencies.lioloader]]
 modId = "architectury"
-type = "required"
+type = "optional"
 versionRange = "[${architectury_api_version_min},)"
 ordering = "AFTER"
 side = "BOTH"
