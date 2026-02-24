@@ -28,18 +28,18 @@ public final class ClientReloadEvents {
         client.execute(() -> {
             try {
                 Path gameDir = Lioloader.gameDir();
-                boolean changed = false;
+                boolean orderChanged = false;
 
                 if (gameDir != null) {
+                    client.getResourcePackRepository().reload();
                     List<String> order = LioloaderPackLoadOrder.readOrder(
                             LioloaderPackLoadOrder.resourcepackOrderFile(gameDir)
                     );
-                    changed = LioloaderPackLoadOrder.applyOrder(client.getResourcePackRepository(), order);
+                    orderChanged = LioloaderPackLoadOrder.applyOrder(client.getResourcePackRepository(), order);
                 }
 
-                if (!changed) {
-                    LogUtils.getLogger().info("[Lioloader] Client pack order unchanged; skipping resource reload");
-                    return;
+                if (!orderChanged) {
+                    LogUtils.getLogger().info("[Lioloader] Client pack order unchanged; running initial resource reload anyway");
                 }
 
                 client.reloadResourcePacks().thenRun(() -> {
@@ -52,6 +52,5 @@ public final class ClientReloadEvents {
                 LogUtils.getLogger().error("[Lioloader] Client reloadResourcePacks() call failed", t);
             }
         });
-
     }
 }

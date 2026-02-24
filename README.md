@@ -1,123 +1,91 @@
-![banner shape 2](https://i.ibb.co/yFGc2V40/banner-shape-2.png)
+<p align="left">
+  <img src="https://i.ibb.co/yFGc2V40/banner-shape-2.png" alt="LioLoader Banner">
+</p>
 
-LioLoader adds **global datapacks** and **global resource packs** to your instance automatically by scanning special folders inside your game directory.
+<p align="left">
+  <strong>LioLoader</strong> is a global <strong>datapack</strong> and <strong>resource pack</strong> loader for Minecraft, designed to keep your packs organized and automatically applied across your worlds and servers.
+</p>
 
-This is useful for keeping packs **outside of individual worlds** and applying them consistently across worlds and servers you run locally.
-
----
-
-## Folder Layout
-
-LioLoader uses a `lioloader` folder inside your instance:
-
-- **Datapacks**
-  - `instance/lioloader/data/`
-- **Resource packs**
-  - `instance/lioloader/resourcepacks/`
-
-Anything placed in these folders will be discovered and added to Minecraft’s pack repositories.
-
-Note: This mod is only needed server-side (needed client-side if using resource pack loader) and needs Architectury API
----
-
-## What Counts as a Pack?
-
-### Supported formats (both datapacks and resource packs)
-
-LioLoader supports:
-
-1. **Zip packs**
-   - Any `*.zip` inside the folder is treated as a pack.
-
-2. **Normal pack folders**
-   - A folder is treated as a pack if it contains:
-     - `pack.mcmeta`
-     - and the proper content folder:
-       - Datapacks: `data/`
-       - Resource packs: `assets/`
-
-3. **Datapacks inside nested folders**
-
-   Datapacks can be stored inside other folders, as long as the folder you want treated as the pack root contains:
-
-   - `pack.mcmeta`
-   - `data/`
-
-   Example (nested datapack structure):
-
-   - `instance/lioloader/data/somefolder/pack.mcmeta`
-   - `instance/lioloader/data/somefolder/data/...`
-
-   This lets you organize datapacks however you want while still being detected.
+<p align="left">
+  Instead of copying packs into every save, LioLoader will automatically load your datapacks and resource packs that are inside the <code>instance/lioloader</code> folder.
+</p>
 
 ---
 
-## Load Order / Priority
+## Folder Structure
 
-LioLoader supports **explicit pack ordering** using JSON files generated in your `lioloader` folder.
+<p align="left">
+  LioLoader scans dedicated folders inside your instance and injects any valid packs directly into Minecraft’s pack system on world load.
+</p>
 
-These files are automatically created if missing:
+<p align="left"><strong>Datapack:</strong></p>
 
-- `instance/lioloader/datapack_load_order.json`
-- `instance/lioloader/resourcepack_load_order.json`
+<p align="left"><code><strong>instance/lioloader/data/</strong></code></p>
+<p align="left"><code><strong>instance/datapacks/</strong></code></p>
 
-### Format
+<p align="left">
+  Resource packs placed in the resource packs folder will be loaded automatically and will be treated as clientside assets.
+</p>
 
-Each file contains an `order` array:
+<p align="left">
+  (For removable resources please use Vanilla Minecraft's <code>instance/resourcepacks</code> folder)
+</p>
 
-```json
-{
-  "order": [
-    "highest_priority_example",
-    "second_priority_example",
-    "lowest_priority_example"
-  ]
-}
-````
+<p align="left"><strong>Resource Pack:</strong></p>
 
-### How ordering works
+<p align="left"><code><strong>instance/lioloader/resourcepacks/</strong></code></p>
 
-* Packs listed first are treated as **higher priority**.
-* Packs not listed still load normally (Minecraft defaults).
-* Packs with lower priorities will overwrite pack data with higher priority.
+<p align="left">
+  Unzipped datapack loading is supported and is tied to the <code>pack.mcmeta</code> no matter what subfolder it may be in, as long the datapack is within the Datapack directory above.
+</p>
 
-### Pack ID notes
+<p align="left" style="font-size:14px;">
+  For advanced features such as load priority, nested pack handling, and pack ordering, please refer to the wiki.
+</p>
 
-* For zip packs, you can write the name with or without `.zip`:
-
-    * `my_pack.zip` or `my_pack`
-* For folder packs, use the folder name:
-
-    * `my_pack_folder`
+<p align="left">
+  → <a href="https://github.com/Liopyu/LioLoader/wiki"><strong>View the LioLoader Wiki</strong></a>
+</p>
 
 ---
 
-## Quick Example
+## Can Be Used To Customize My Other Projects!
 
-Put a datapack here:
+<p align="left">
+  LioLoader will soon™ be used as an optional dependency for my other mods which would offer simple tweak support via a config. For now you are able to edit these structures via globally loaded datapacks overrides.
+</p>
 
-* `instance/lioloader/data/MyGlobalPack/pack.mcmeta`
-* `instance/lioloader/data/MyGlobalPack/data/<namespace>/...`
-
-Put a resource pack here:
-
-* `instance/lioloader/resourcepacks/MyGlobalRP/pack.mcmeta`
-* `instance/lioloader/resourcepacks/MyGlobalRP/assets/<namespace>/...`
-
-Then set priority:
-
-* `instance/lioloader/datapack_load_order.json`
-* `instance/lioloader/resourcepack_load_order.json`
+<p align="left">
+  <a href="https://www.curseforge.com/minecraft/mc-mods/lios-overhauled-villages">
+    <img src="https://i.ibb.co/wNf00fvN/lios-overhauled-villages.png" alt="Lio's Overhauled Villages" width="360">
+  </a>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/lios-seafaring-dungeons">
+    <img src="https://i.ibb.co/kgPmdbHD/lios-seafaring-dungeons.png" alt="Lio's Seafaring Dungeons" width="360">
+  </a>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/spiral-tower-villages">
+    <img src="https://i.ibb.co/jktGQ4XC/Lios-Outlandish-Village-Spiral-Towers.png" alt="Spiral Tower Villages" width="360">
+  </a>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/hobbit-hill-village">
+    <img src="https://i.ibb.co/JFF7vxPq/Lios-Outlandish-Village-1.png" alt="Hobbit Hill Village" width="360">
+  </a>
+</p>
 
 ---
 
-## Community
+## <p align="left">
+<a href="https://discord.gg/sPHes7q4Pr">
+  <img src="https://i.ibb.co/qDNhg49/636e0a6a49cf127bf92de1e2-icon-clyde-blurple-RGB.png" alt="Discord" width="128" height="97">
+</a>
+</p>
 
-Join our [Discord](https://discord.gg/sPHes7q4Pr) community to connect with other users and get help
-with any questions or issues
-you encounter while using LioLoader.
+<p align="left">
+  Join the Discord for updates, support, previews, and development discussion.
+</p>
 
-![usageinmodpacks](https://i.ibb.co/hJvQHRN5/usageinmodpacks.png)
+<p align="left">
+  <img src="https://i.ibb.co/hJvQHRN5/usageinmodpacks.png" alt="Usage in Modpacks" width="602">
+</p>
 
-**Feel free to include LioLoader in any pack of your choosing!**
-
+<p align="left">
+  LioLoader is free to use in any modpack. No permission required.
+</p>
