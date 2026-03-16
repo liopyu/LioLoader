@@ -18,38 +18,32 @@ public final class ClientReloadEvents {
 
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Pre event) {
-        if (done) return;
+        if (done)
+            return;
 
         Minecraft client = Minecraft.getInstance();
-        if (client == null) return;
+        if (client == null)
+            return;
 
         done = true;
 
         client.execute(() -> {
             try {
                 Path gameDir = Lioloader.gameDir();
-                boolean orderChanged = false;
 
                 if (gameDir != null) {
-                    client.getResourcePackRepository().reload();
                     List<String> order = LioloaderPackLoadOrder.readOrder(
-                            LioloaderPackLoadOrder.resourcepackOrderFile(gameDir)
-                    );
-                    orderChanged = LioloaderPackLoadOrder.applyOrder(client.getResourcePackRepository(), order);
-                }
+                            LioloaderPackLoadOrder.resourcepackOrderFile(gameDir));
+                    boolean orderChanged = LioloaderPackLoadOrder.applyOrder(client.getResourcePackRepository(), order);
 
-                if (!orderChanged) {
-                    LogUtils.getLogger().info("[Lioloader] Client pack order unchanged; running initial resource reload anyway");
+                    if (orderChanged) {
+                        LogUtils.getLogger().info("[Lioloader] Applied client resource pack load order");
+                    } else {
+                        LogUtils.getLogger().info("[Lioloader] Client pack order unchanged");
+                    }
                 }
-
-                client.reloadResourcePacks().thenRun(() -> {
-                    LogUtils.getLogger().info("[Lioloader] Client resource reload complete");
-                }).exceptionally(err -> {
-                    LogUtils.getLogger().error("[Lioloader] Client resource reload failed", err);
-                    return null;
-                });
             } catch (Throwable t) {
-                LogUtils.getLogger().error("[Lioloader] Client reloadResourcePacks() call failed", t);
+                LogUtils.getLogger().error("[Lioloader] Client pack order application failed", t);
             }
         });
     }
