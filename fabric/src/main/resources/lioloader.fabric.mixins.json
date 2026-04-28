@@ -3,10 +3,10 @@
   "package": "net.liopyu.lioloader.mixin",
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
-  "client": [],
-  "mixins": [
-    "PackRepositoryAccessor"
+  "client": [
+    "PackRepositoryMixin"
   ],
+  "mixins": [],
   "injectors": {
     "defaultRequire": 1
   }

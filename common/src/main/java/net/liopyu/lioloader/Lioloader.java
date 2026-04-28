@@ -1,5 +1,6 @@
 package net.liopyu.lioloader;
 
+import net.liopyu.lioloader.pack.LioloaderAssetsFolder;
 import net.liopyu.lioloader.pack.LioloaderGlobalDatapacks;
 import net.liopyu.lioloader.pack.LioloaderGlobalResourcePacks;
 import net.liopyu.lioloader.pack.LioloaderPackLoadOrder;
@@ -15,6 +16,7 @@ public final class Lioloader {
         LioloaderGlobalDatapacks.ensureDirs(gameDir);
         LioloaderGlobalResourcePacks.ensureDirs(gameDir);
         LioloaderPackLoadOrder.ensureOrderFiles(gameDir);
+        LioloaderAssetsFolder.ensureDir(gameDir);
     }
 
     public static Path gameDir() {

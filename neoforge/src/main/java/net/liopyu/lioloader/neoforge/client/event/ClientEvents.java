@@ -1,6 +1,7 @@
 package net.liopyu.lioloader.neoforge.client.event;
 
 import net.liopyu.lioloader.Lioloader;
+import net.liopyu.lioloader.pack.LioloaderAssetsFolder;
 import net.liopyu.lioloader.pack.LioloaderGlobalResourcePacks;
 import net.minecraft.server.packs.PackType;
 import net.neoforged.api.distmarker.Dist;
@@ -21,5 +22,6 @@ public final class ClientEvents {
         Path globalDir = LioloaderGlobalResourcePacks.globalResourcePacksDir(gameDir);
 
         event.addRepositorySource(LioloaderGlobalResourcePacks.repositorySource(globalDir));
+        event.addRepositorySource(LioloaderAssetsFolder.repositorySource(LioloaderAssetsFolder.packRootDir(gameDir)));
     }
 }
